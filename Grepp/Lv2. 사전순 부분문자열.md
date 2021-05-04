@@ -37,19 +37,31 @@ s는 알파벳 소문자로만 이루어져 있습니다.
 
 "yxyc"로 만들 수 있는 부분 문자열은 다음과 같습니다.
 
-y,
-x,
-c,
-yx,
-yy,
-yc,
-xy,
-xc,
-yxy,
-yxc,
-yyc,
-xyc,
-yxyc,
+y
+
+x
+
+c
+
+yx
+
+yy
+
+yc
+
+xy
+
+xc
+
+yxy
+
+yxc
+
+yyc
+
+xyc
+
+yxyc
 
 이 중 사전 순으로 가장 뒤에 나오는 문자열은 "yyc"입니다.
 # 풀이1
