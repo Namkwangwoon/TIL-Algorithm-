@@ -102,7 +102,7 @@ def solution(N, road, K):
 - 역시 다익스트라 알고리즘 활용했다.
 - map을 사용하지 않고 매번 road 리스트를 확인했다.
 - 그냥 queue 대신 PriorityQueue를 활용해서, 마을 번호가 작은 것부터 차례대로 방문하도록 했다.
-- 리스트에서 K보다 작은 값의 갯수를 셀 때, K보다 작은 값들로 리스트를 만들어 그 길이를 
+- 리스트에서 K보다 작은 값의 갯수를 셀 때, K보다 작은 값들로 리스트를 만들어 그 길이 리턴
 ```python
 from queue import PriorityQueue # 파이썬 내장 모듈
 
