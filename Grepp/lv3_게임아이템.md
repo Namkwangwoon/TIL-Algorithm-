@@ -91,4 +91,50 @@ def solution(healths, items):
 그러나 효율성 테스트에서 낮은 점수를 보였다.
 
 현재의 2중 반복문 + 1중 반복문 구조의 복잡도를 줄일 수 있는 방법을 생각해봐야겠다..
+# 
+heap을 써서 복잡도를 줄인다면 효율성 테스트를 통과하지 않을까 생각했지만, 그렇지 않았다. 그래서 결국 풀이를 참고했다.
 
+풀이를 이해하기 위해서는 우선 dequeue의 사용법을 알아야 한다.
+> ## collections.dequeue
+> dequeue는 스택과 큐의 기능을 모두 가진 자료구조로, 한개의 객체로 동시에 스택과 큐처럼 사용 가능하다.
+> ### 스택 메서드
+> - `append()`: 오른쪽 끝에 입력
+> - `pop()`: 오른쪽 끝에서 출력
+> ### 큐 메서드
+> - `appendleft()`: 왼쪽 끝에 입력
+> - `pop()`: 오른쪽 끝에서 출력
+> - `append()`: 오른쪽 끝에 입력
+> - `popleft()`: 왼쪽 끝에서 출력
+> ### 그 밖의 메서드
+> - `extend()`, `extendleft()`: 각각 오른쪽, 왼쪽에 확장
+> - `insert()`, `remove()`: 리스트의 `insert()`, `remove()`와 같다
+> - `reverse()`: 내용의 순서를 반전
+
+그러면 이제 풀이의 코드를 보자
+```python
+from heapq import heapify, heappush, heappop
+from collections import deque
+
+def solution(healths, items):
+    healths.sort()
+    items = sorted([(item[1], item[0], index+1) for index, item in enumerate(items)])       # 깎는 체력이 낮은 순으로 정렬 + 인덱스 같이 저장
+    items = deque(items)        # dequeue 적용
+    answer = []
+    heap = []
+
+    for health in healths:      # 낮은 체력부터
+        while items:        # 깎는 체력이 낮은 아이템부터
+            debuff, buff, index = items[0]
+            if health - debuff < 100:   # 사용할 수 없는 아이템이 나오기 시작할때 break
+                break
+            items.popleft()     # 사용한 아이템 제거
+            heappush(heap, (-buff, index))      # 사용 가능한 아이템들 heappush (이전 캐릭터가 heappush했던 아이템들도 유지)
+        # 현재 힙에는 사용할 수 있는 아이템들이 공격력을 많이 올려주는 순서로 들어잇음
+        if heap:
+            _, index = heappop(heap)    # 사용가능 아이템 중 가장 공격력을 많이 올려주는 아이템 선택
+            answer.append(index)        # 그 아이템의 index 추가
+
+    return sorted(answer)
+```
+- 내 풀이와는 다르게, items나 health 배열을 순회할 때 중복해서 순회하는 경우를 없애서, 같은 2중 반복문임에도 불구하고 복잡도를 크게 줄일 수 있었다.
+- 낮은 체력부터 사용가능한 아이템만을 보면서 후보로 지정하고, 아이템을 고를때는 공격력을 가장 많이 높여주는 아이템을 선택하는 전략
