@@ -85,3 +85,30 @@ def solution(s):
 테스트 1 〉	통과 (1896.92ms, 10.2MB)
 테스트 2 〉	통과 (1.52ms, 10.1MB)
 ```
+# 해답
+```python
+def is_palindrome(s, start, end):
+    for i in range((end - start) // 2 + 1):
+        if s[start + i] != s[end - i]:
+            return False
+
+    return True
+
+
+def solution(s):
+    for answer in range(len(s), 0, -1): # 문자열 최대 길이에서 하나씩 줄여나갑니다.
+        start = 0 # 0에서
+        end = answer - 1 # answer 길이까지
+        
+        while end < len(s): 
+            if is_palindrome(s, start, end): # 팰린드롬인지 확인합니다
+                return answer; # 팰린드롬이면 그대로 리턴
+            start += 1
+            end += 1 # 한 칸씩 순회합니다.
+    
+    return 1 # 한 글자일 경우 1을 리턴합니다.
+```
+- 부분문자열의 길이를 1씩 줄어나가면서 그 길이를 갖는 모든 경우의 문자열을 검사했다.
+- 길이가 가장 긴 부분문자열부터 검사하기 때문에, 팰린드롬 문자열을 찾자마자 그 길이가 답이 된다.
+# 추가
+- 더 쉽게 팰린드롬을 검사하는 방법 sub_s[:]==sub_s[::-1] 이면 팰린드롬이다!!
