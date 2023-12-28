@@ -71,3 +71,4 @@ def solution(numbers):
 테스트 15 〉	통과 (0.01ms, 10.2MB)
 ```
 - str(int('000')) => str(0) => '0'
+- 다른 사람의 풀이를 참고하니, reduce 말고도 ```''.join(numbers)``` 도 가능
