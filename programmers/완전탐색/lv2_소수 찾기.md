@@ -73,5 +73,5 @@ def solution(numbers):
 - itertools.permutations() (+ itertools.combinations)
   - itertools.permutations(리스트, 순열의 길이)
   - tuple 리턴
-- 위 라이브러리의 사용법 이외에도, 순열의 길이를 1부터 끝까지 지정해주려는 생각을 하지 못했었다.
+- 위 라이브러리의 사용법 이외에도, 순열의 개수를 1부터 끝까지 고려해야된다는 생각을 하지 못했었다.
   - 1, 2, 3, 4, 5 에서 1, 3 만을 뽑아 수를 만들 수 있기 때문
