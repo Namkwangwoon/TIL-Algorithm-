@@ -95,7 +95,7 @@ def solution(answers):
     return result
 ```
 - answers를 하나씩 차례대로 보면서 pattern과 비교하며 점수 계산
-- 최대 점수와 같으면 index+1을 list에 추가
+- 최대 점수와 같은 점수면 (index+1)번째 사람이 가장 높은 점수를 받은 사람
 - 깔끔하다
 
 # 다른 사람의 풀이2
