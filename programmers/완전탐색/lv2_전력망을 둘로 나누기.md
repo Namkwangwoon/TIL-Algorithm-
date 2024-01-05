@@ -109,11 +109,13 @@ def solution(n, wires):
 - appendleft(), pop()으로 queue 구현 가능 (append(), pop()으로 stack 구현 가능, popleft()도 가능)
 - extend(), extendleft()를 통해 iterable 데이터(list, str, tuple) 추가 가능
 - rotate()를 통해 요소들을 값 만큼 회전 가능
-  - deq = deque(['a', 'b', 'c', 'd', 'e'])
-  - deq.rotate(2)
-    > ['d', 'e', 'a', 'b', 'c']
-  - deq.rotate(-1)
-    > ['b', 'c', 'd', 'e', 'a']
+ ```python
+  deq = deque(['a', 'b', 'c', 'd', 'e'])
+  deq.rotate(2)
+    >> ['d', 'e', 'a', 'b', 'c']
+  deq.rotate(-1)
+    >> ['b', 'c', 'd', 'e', 'a']
+```
 # 내 풀이2
 - 연습을 위해 재귀를 사용해서도 풀어봄
 ```python
