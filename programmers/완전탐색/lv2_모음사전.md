@@ -117,7 +117,7 @@ from itertools import combinations, product
 def solution(word):
     words = []
     for i in range(1, 6):
-        words.extend([''.join(p) for p in product(['A', 'E', 'I', 'O', 'U'], repeat=i)])
+        words.extend([''.join(p) for p in product('AEIOU', repeat=i)])
     words = sorted(words)
     
     return words.index(word)+1
