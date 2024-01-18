@@ -30,7 +30,7 @@
 ### 예제 #2
 target인 "cog"는 words 안에 없기 때문에 변환할 수 없습니다.
 
-# 내 풀이
+# 내 풀이1
 ```python
 from collections import deque
 
@@ -112,3 +112,43 @@ def solution(begin, target, words):
 - 같은 bfs를 사용
 - 'dist'를 통해서 visited 처럼 queue에 단어가 중복으로 들어가는 것 방지
   - 안 될 것 같다고 생각했지만, 어차피 bfs + 최소 경로만 찾으면 되기 때문에, 결국 dist에는 최소의 경로들만 들어가게 됨
+
+# 내 풀이2
+다른 사람의 풀이를 토대로, 내 풀이에 visited를 적용해봄
+```python
+
+from collections import deque
+
+def solution(begin, target, words):
+    q = deque([(0, begin)])
+    visited = [0 for i in words]
+    l = len(begin)
+    
+    if target not in words:
+        return 0
+    
+    while q:
+        cnt, curr = q.popleft()
+        
+        if curr==target:
+            return cnt
+        
+        for i, word in enumerate(words):
+            same_count=0
+            for w, c in zip(word, curr):
+                if w==c:
+                    same_count += 1
+            if visited[i]==0 and same_count == l-1:
+                q.append((cnt+1, word))
+                visited[i] = 1
+    
+    return 0
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.01ms, 10.2MB)
+테스트 2 〉	통과 (0.10ms, 10.2MB)
+테스트 3 〉	통과 (0.34ms, 10.4MB)
+테스트 4 〉	통과 (0.01ms, 10.2MB)
+테스트 5 〉	통과 (0.01ms, 10.2MB)
+```
