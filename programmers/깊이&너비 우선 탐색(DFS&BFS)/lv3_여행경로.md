@@ -125,3 +125,13 @@ def solution(tickets):
 ```
 - DFS를 쓴 것은 같은
 - collections.defaultdict를 사용하여, tickets의 모든 티켓들을 dict['from'] = ['to1', 'to2', ...]로 정리 후 알파벳 순서대로 sorting 해준 후 이어줌
+### collections.defaultdict
+
+```python
+from collections import defaultdict
+
+dic = defaultdict(<자료형 or lambda: >)
+```
+
+- 선언한 `<자료형 or lambda: >` 의 기본값(ex: 0, [], (), '')으로 딕셔너리의 초기값으로 지정 가능
+- 숫자, 리스트, 세트, 문자열 등으로 초기화 가능
