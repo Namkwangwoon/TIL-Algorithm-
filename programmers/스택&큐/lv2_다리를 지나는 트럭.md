@@ -83,3 +83,27 @@ def solution(bridge_length, weight, truck_weights):
 - 어려운 개념은 없지만, 트럭이 다리를 건널 때, 다리의 최대 무게와 다리 위 트럭의 무게, 다리의 길이를 모두 고려해야 하므로, 꼼꼼이 풀어야하는 문제인 것 같다
 
 # 다른 사람의 풀이
+```python
+from collections import deque
+
+def solution(bridge_length, weight, truck_weights):
+    bridge = deque(0 for _ in range(bridge_length))
+    total_weight = 0
+    step = 0
+    truck_weights.reverse()
+
+    while truck_weights:
+        total_weight -= bridge.popleft()
+        if total_weight + truck_weights[-1] > weight:
+            bridge.append(0)
+        else:
+            truck = truck_weights.pop()
+            bridge.append(truck)
+            total_weight += truck
+        step += 1
+
+    step += bridge_length
+
+    return step
+```
+- 더 직관적으로 하기 위해, bridge_length의 크기를 갖는 bridge의 새로운 큐를 생성, 트럭이 없는 구간은 0
