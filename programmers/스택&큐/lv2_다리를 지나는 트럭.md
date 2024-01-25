@@ -107,3 +107,4 @@ def solution(bridge_length, weight, truck_weights):
     return step
 ```
 - 더 직관적으로 하기 위해, bridge_length의 크기를 갖는 bridge의 새로운 큐를 생성, 트럭이 없는 구간은 0
+- 시간에 대한 고려를 따로 할 필요가 없기 때문에(항상 같은 길이의 bridge 큐), 내 풀이보다 시간이 더 빠르다.
