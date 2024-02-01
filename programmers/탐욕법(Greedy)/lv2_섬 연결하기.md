@@ -53,26 +53,31 @@ def solution(n, costs):
 # 다른 사람의 풀이 2
 - Kruskal 알고리즘을 사용한 풀이
 ```python
-def ancestor(node, parents):
-    if parents[node] == node:
-        return node
+def ancester(node, parents):
+    if parents[node] != node:
+        return ancester(parents[node], parents)
     else:
-        return ancestor(parents[node], parents)
+        return node
+
 
 def solution(n, costs):
-    answer = 0
-    edges = sorted([(x[2], x[0], x[1]) for x in costs])
+    costs.sort(key=lambda x: x[2])
     parents = [i for i in range(n)]
-    bridges = 0
-    for w, f, t in edges:
-        if ancestor(f, parents) != ancestor(t, parents):
-            answer += w
-            parents[ancestor(f, parents)] = t
-            bridges += 1
-        if bridges == n - 1:
-            break
-    return answer
+    answer=0
+    
+    for cost in costs:
+        a, b, c = cost
+        a_anc, b_anc = ancester(a, parents), ancester(b, parents)
+        if a_anc == b_anc:
+            continue
+        elif a_anc != b_anc:
+            min_anc, max_anc = min(a_anc, b_anc), max(a_anc, b_anc)
+            parents[max_anc] = min_anc
+            n-=1
+            answer += c
+        if n==1:
+            return answer
 ```
 - cost가 작은 경로부터 보면서, 연결된 노드들로 그래프 생성
   - 노드의 연결은, 최 상단 부모 노드(parents)를 갖게 함으로써 표현 (= 최 상단 부모 노드가 같으면 두 노드들은 연결되어 있다.)
-  - 이미 연결되어 있는 그래프는 다시 연결할 필요가 없다. (최 상단 부모 노드가 다른 노드들만 연결한다)
+  - 이미 연결되어 있는 그래프는 다시 연결할 필요가 없다. (= 최 상단 부모 노드가 다른 노드들만 연결한다)
