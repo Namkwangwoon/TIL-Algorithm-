@@ -51,30 +51,30 @@
       = {(연속으로 (+) 붙은 수) - (최소 - (최대 - (최소 ... - ())))}
     를 고려할려고 했지만, **항상 -(최대) < +(최소)는 아니라는 사실을 놓쳤다. (둘 다 부호가 마이너스면, -(최대) > +(최소))**
   - 그리고 **"- a + b - c"가 (-a+b-c), (-a-b-c), (-a-b+c) 이렇게 세 가지가 될 수 있다는 사실을 놓쳤다.**
-    - "-a+b-c = -(a-b+c)"를 시작으로 ()안의 최대 혹은 최소를 구해야 했는데, (-)를 제외한 영역의 최대 최소를 구하려 a+b-c에서 시작해버렸다,,
-  ```python
-  def solution(arr):
-    min_val, max_val = 0, 0
-    nums = []
-    for a in arr[::-1]:
-        if a=="-":
-            tmp_min, tmp_max = min_val, max_val
-            if len(nums)==1:
-                min_val = min(-nums[-1]+tmp_min, -nums[-1]-tmp_max)
-                max_val = max(-nums[-1]-tmp_min, -nums[-1]+tmp_max)
-            else:
-                sums = sum(nums[:-1])
-                min_val = min(-nums[-1]-sums+tmp_min, -nums[-1]-sums-tmp_max)
-                max_val = max(-nums[-1]-sums-tmp_min, -nums[-1]+sums+tmp_max)
-            nums = []
-        elif a!="+":
-            nums.append(int(a))
-        print(a, min_val, max_val)
-            
-    return sum(nums)+max_val
-  ```
-  정확성  테스트
-  ```
+  - "-a+b-c = -(a-b+c)"를 시작으로 ()안의 최대 혹은 최소를 구해야 했는데, (-)를 제외한 영역의 최대 최소를 구하려 a+b-c에서 시작해버렸다,,
+```python
+def solution(arr):
+  min_val, max_val = 0, 0
+  nums = []
+  for a in arr[::-1]:
+      if a=="-":
+          tmp_min, tmp_max = min_val, max_val
+          if len(nums)==1:
+              min_val = min(-nums[-1]+tmp_min, -nums[-1]-tmp_max)
+              max_val = max(-nums[-1]-tmp_min, -nums[-1]+tmp_max)
+          else:
+              sums = sum(nums[:-1])
+              min_val = min(-nums[-1]-sums+tmp_min, -nums[-1]-sums-tmp_max)
+              max_val = max(-nums[-1]-sums-tmp_min, -nums[-1]+sums+tmp_max)
+          nums = []
+      elif a!="+":
+          nums.append(int(a))
+      print(a, min_val, max_val)
+          
+  return sum(nums)+max_val
+```
+정확성  테스트
+```
 테스트 1 〉	통과 (0.03ms, 10.3MB)
 테스트 2 〉	통과 (0.03ms, 10.4MB)
 테스트 3 〉	통과 (0.02ms, 10.2MB)
