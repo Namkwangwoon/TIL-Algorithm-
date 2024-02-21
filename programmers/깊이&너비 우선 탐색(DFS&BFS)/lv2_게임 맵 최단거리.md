@@ -238,6 +238,7 @@ def solution(maps):
 ```
 - 같은 BFS인거 같음
 - 어떤게 효율성을 높여줬는지 알아봄
+- 무조건 append() 하는게 아니라, 그 전에 해당 경로의 타당성을 알아보고 append()하여 불필요한 search를 줄임
 
 # 내 풀이2-1
 ```python
