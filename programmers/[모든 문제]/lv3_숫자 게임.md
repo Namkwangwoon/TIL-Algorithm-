@@ -89,7 +89,7 @@ def solution(A, B):
 - 시간을 줄이기 위해 큐도 사용해 봤지만, 결국 다른 사람의 풀이를 참고
 - 결과론적으로, 매 A의 루프마다 B의 처음으로 돌아가서 확인한 것이 시간 초과가 발생했던 것 같다..
 
-# 다른 사람의 풀이
+# 다른 사람의 풀이 1
 ```python
 def solution(A, B):
     answer = 0
@@ -106,3 +106,20 @@ def solution(A, B):
 ```
 - 내 풀이와는 다르게, B를 아끼지 않음 (위에서 전략의 두 번째에서, A를 큰 것부터 보면서, 그것보다 큰 B원소들 중 가장 "큰" 것과 매칭)
 - 어차피 같은 결과라, 효율성이 더 좋은 이 풀이가 더 좋음
+
+# 다른 사람의 풀이 2
+```python
+def solution(A, B):
+    answer = 0
+    A.sort()
+    B.sort()
+    j = 0
+
+    for i in range(len(A)):
+        if A[j] < B[i]:
+            answer = answer + 1
+            j = j+1
+
+    return answer
+```
+- 작은 A 값부터 처리하는 풀이도 가능하다.
