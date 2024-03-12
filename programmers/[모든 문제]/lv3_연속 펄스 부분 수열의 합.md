@@ -105,3 +105,21 @@ def solution(sequence):
   - DP 조건은 sequence에서 `i`번째 원소를 포함하는 부분 수열 중 최대를 업데이트
     - (`i-1`번째를 포함하는 최대 + `i`번째 원소)가 더 크면 순열이 이어지며, (`i`번째 원소)가 더 크면 순열이 끊어짐
   - 두 순열 `seq_1`, `seq_2`의 최대값중 더 큰 값이 정답
+
+# 다른 사람의 풀이
+```python
+def solution(sequence):
+    answer = 0
+    prefixS = [0]
+    for i in range(len(sequence)):
+        pulse = 1 if i%2 ==0  else -1
+        prefixS.append(prefixS[-1]+pulse*sequence[i])
+        
+    return abs(max(prefixS) - min(prefixS))
+```
+- 전략
+  - 연속 펄스 부분 수열은 같은 인덱스끼리 절대값은 같고 부호만 다르다.
+  - `prefixS`의 원소들은 다음과 같음
+    - `[0, seq[0], seq[0]-seq[1], seq[0]-seq[1]+seq[2], seq[0]-seq[1]+seq[2]-seq[3], ...]`
+  - `prefixS[j] - prefixS[i]`는 `seq[i]~seq[j+1]` 까지의 연속 펄스 부분 수열이 생성
+  - 따라서 가장 큰 펄스 부분 수열을 생성하려면, `prefixS`의 가장 큰 원소와 가장 작은 원소의 차를 구하면 됨
