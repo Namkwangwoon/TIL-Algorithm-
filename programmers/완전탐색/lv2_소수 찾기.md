@@ -44,8 +44,8 @@ def solution(numbers):
     for i in range(2, max_num+1):
         if table[i]:
             primes.append(i)
-        for j in range(2*i, max_num+1, i):
-            table[j] = False
+            for j in range(2*i, max_num+1, i):
+                table[j] = False
             
     answer = 0
     for p_n in perm_nums:
