@@ -118,3 +118,40 @@ def solution(n, weak, dist):
   - 취약점들을 모두 점검했을때 몇 명의 친구가 필요했는지 체크하며, 최소로 필요했던 친구의 수를 구함
 
 # 다른 사람의 풀이
+```python
+from itertools import permutations
+def solution(n, weak, dist):
+    length = len(weak)
+    
+    # 원형을 선형으로 
+    for i in range(length) :
+        weak.append(weak[i] + n)
+    # 최소값을 구하는 거니까 나올 수 없는 최대값으로 초기화 
+    # 모든 친구들 동원 + 1 
+    answer = len(dist) +1 
+    
+    #  각각의 weak지점에서 시작 
+    for start in range(length) :
+        for friends in list(permutations(dist,len(dist))) :
+            count = 1 
+            # 첫번째 친구만 나옴 
+            position = weak[start] + friends[0]
+            # weak들을 돈다. 
+            for index in range(start,start+length) :
+                # 보수한 위치가 weak보다 작으면 
+                if position < weak[index] :
+                    # 한명 더 나온다.
+                    count+=1
+                    # 친구보다 나온 사람이 많으면 그만둬 (불가능)
+                    if count>len(dist) :
+                        break
+                    # weak[index]에서 친구가 나옴 
+                    position = weak[index] + friends[count-1]
+            answer = min(answer, count)
+    if answer > len(dist) :
+        return -1 
+    return answer
+```
+- 내 풀이와는 다르게, 취약점 사이의 거리가 아닌 취약점의 좌표를 통해 점검 가능 지역을 체크함
+- 원형을 선형으로 바꿔주는 과정에서 `weak`를 `[w1, w2, w3]`를 `[w1, w2, w3, w1+n, w2+n, w3+n]`으로 바꿔줌
+  - `+n`을 하지 않은 모든 원소로(`w1, w2, w3`)부터 `+n`을 갈 수 있도록 하기 위해
