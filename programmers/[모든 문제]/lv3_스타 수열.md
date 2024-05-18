@@ -115,3 +115,46 @@ def solution(a):
       - ex) `233...334` 에서는 `2334`만 가능
   - 스타 수열을 만들기 위해 쌍을 이루는 숫자의 방향을 나타내는 배열 `table`, 특정 숫자가 쌍을 이룬 갯수 `count`
     - `table`에서 특정 숫자가 왼쪽 숫자와 쌍을 이루면 `l`, 오른쪽 숫자와 쌍을 이루면 `r`
+
+# 다른 사람의 풀이
+```python
+from collections import Counter
+
+def solution(a):
+    answer = -1
+
+    # 현재 배열에 숫자들이 나온 횟수들
+    els = Counter(a)
+
+    # a에 있는 각 원소 k를 기준으로 스타배열을 만들 수 있는지 검사
+    for k in els.keys():
+
+        # 현재 k의 등장횟수가 스타수열에 사용된 공통 인자 횟수 이하면 continue
+        if els[k] <= answer:
+            continue
+
+        # k의 등장 횟수
+        cnt = 0
+        idx = 0
+        while idx < len(a)-1:
+            # 두 칸 모두 k가 포함 안되어있거나 두 칸이 같은 값이면 스타수열 안되니까 continue
+            if (a[idx] != k and a[idx+1] != k) or (a[idx] == a[idx+1]):
+                idx += 1
+                continue
+
+            # 스타수열의 원소로 추가할 수 있는 경우 k사용횟수 1 증가
+            cnt += 1
+            # 다음 배열 탐색을 위해 두칸 점프
+            idx += 2
+
+        # 스타 수열 완성에 쓰인 공통 원소 k가 사용된 최대 횟수 갱신
+        answer = max(cnt, answer)
+
+    return -1 if answer == -1 else answer*2
+```
+- 전략
+  - 배열에 나오는 숫자들을 대상으로, 특정 숫자 k가 2번 연속으로 포함되지 않거나, (두 칸에 k가 하나 포함된 상태에서) 연속한 두 칸이 같은 숫자인지(= 두 칸 모두 k인지)를 체크
+    - 스타 수열이 되려면, 두 칸에 특정 숫자가 하나만 존재해야 함!
+  - 위 조건이면 인덱스를 한 칸만 전진 (스타 수열 충족 X)
+  - 위 조건이 아니면 인덱스를 두 칸 전진 & 카운드+1 (두 칸은 스타 수열의 부분수열이 됨)
+  - 매 k마다 최대 스타배열 길이 갱신
