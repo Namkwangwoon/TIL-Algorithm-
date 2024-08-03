@@ -83,6 +83,8 @@ while left<right:
     right = mid
   elif mid<target:
     left = mid+1
+    
+return left
 ```
 - Upper bound binary seatch
 ```python
@@ -95,6 +97,8 @@ while left<right:
     right = mid
   elif mid<=target:
     left = mid+1
+
+return left
 ```
 - 주의할 점
   - `while l<r`
