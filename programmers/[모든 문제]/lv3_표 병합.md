@@ -273,7 +273,7 @@ def solution(commands):
 - 실수했던 부분을 결국 찾았지만, 하나의 테스트 케이스는 결국 실패 원인을 찾지 못했다,,
     - MERGE 부분에서 두 셀 중 하나만 값이 존재하는 경우를 빠뜨렸다 (문제를 꼼꼼히 읽자!)
 
-# 다른 사람의 풀이
+# 다른 사람의 풀이1
 ```python
 def solution(commands):
     answer = []
@@ -321,3 +321,91 @@ def solution(commands):
 - 전략
     - 내 풀이와 비슷하게 병합과 실제값을 관리하는 `merge`와 `board`를 두 가지 사용했지만, 이중 리스트로 사용
     - 가장 핵심인 `merge`의 값은, 하나의 좌표를 고정하고 이후 병합되는 모든 셀들에 이 좌표를 사용
+
+# 다른 사람의 풀이2
+```python
+parent = [[(r, c) for c in range(51)] for r in range(51)]
+cells = [['EMPTY']*51 for _ in range(51)]
+result = []
+
+def find(r, c) :
+    if (r, c) == parent[r][c] :
+        return parent[r][c]
+    pr, pc = parent[r][c]
+    parent[r][c] = find(pr, pc)
+    return parent[r][c]
+
+def union(r1, c1, r2, c2) :
+    parent[r2][c2] = parent[r1][c1]
+
+def UPDATE(r, c, msg) :
+    pr, pc = find(r, c) 
+    cells[pr][pc] = msg
+
+def UPDATE_VAL(msg1, msg2):
+    for r in range(51) :
+        for c in range(51) :
+            pr, pc = find(r, c)
+            if cells[pr][pc] == msg1 :
+                cells[pr][pc] = msg2
+    
+def MERGE(r1, c1, r2, c2) :
+    r1, c1 = find(r1, c1)
+    r2, c2 = find(r2, c2)
+    
+    if (r1, c1) == (r2, c2) :
+        return
+    if cells[r1][c1] != "EMPTY" :
+        union(r1, c1, r2, c2)
+    else :
+        union(r2, c2, r1, c1)
+
+def UNMERGE(r, c):
+    pr, pc = find(r, c)
+    msg = cells[pr][pc]
+      
+    merge_list = list()
+    for ar in range(51) :
+        for ac in range(51) :
+            apr, apc = find(ar, ac)
+            if (apr, apc) == (pr, pc) :
+                merge_list.append((ar, ac))
+                
+    for ar, ac in merge_list :
+        parent[ar][ac] = (ar, ac)
+        cells[ar][ac] = "EMPTY" if (ar, ac) != (r, c) else msg
+    
+def PRINT(r, c) :
+    pr, pc = find(r, c)
+    result.append(cells[pr][pc])
+        
+def solution(commands):
+    for command in commands :
+        cmd, *arg = command.split()
+        if cmd == "UPDATE" :
+            if len(arg) == 3 :
+                r, c, value = arg
+                UPDATE(int(r), int(c), value)
+            else :
+                value1, value2 = arg
+                UPDATE_VAL(value1, value2)
+        elif cmd == "MERGE" :
+            r1, c1, r2, c2 = map(int, arg)
+            MERGE(r1, c1, r2, c2)
+        elif cmd == "UNMERGE" :
+            r, c = map(int, arg)
+            UNMERGE(r, c)
+        else :
+            r, c = map(int, arg)
+            PRINT(r, c)
+            
+    return result
+```
+- Union-Find
+    - 크루스칼 알고리즘에서 연결된 노드들끼리 부모를 일치시키는 것과 같음
+    - 병합(혹은 연결)된 것들끼리는 부모 값이 같다.
+- 전략
+    - 전체적인 틀은 비슷하지만, `MERGE`에서 Union-Find를 썼다.
+    - 부모 값을 찾는 조건 `find()`는 `parent` 배열 안에 값이 인덱스와 같을때이며, `union()`을 통해 부모를 일치시킴(병합)
+        - `if (r, c) == parent[r][c]: return parent[r][c]`
+    - `UNMERGE` 때에는 병합된 모든 셀들의 부모를 자기 자신의 인덱스로 만들어 줌으로써 병합을 끊어냄
