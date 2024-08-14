@@ -168,8 +168,16 @@ def merge(args, merged, table):
         return
     merging = merged[(r1, c1)] | merged[(r2, c2)] | set([(r1, c1), (r2, c2)])
     # print(merging)
-    v1 = table[(r1,c1)]
-    table[(r2, c2)] = v1
+    if table[(r1,c1)] and table[(r2,c2)]:
+        v1 = table[(r1,c1)]
+        table[(r2, c2)] = v1
+    elif table[(r1,c1)] or table[(r2,c2)]:
+        index = (r1,c1) if table[(r1,c1)] else (r2,c2)
+        not_index = (r2,c2) if table[(r1,c1)] else (r1,c1)
+        v1 = table[index]
+        table[not_index] = v1
+    else:
+        v1 = ''
     
     for (merged_r, merged_c) in merged[(r2, c2)]:
         table[(merged_r, merged_c)]=v1
@@ -234,26 +242,82 @@ def solution(commands):
 ```
 정확성  테스트
 ```
-테스트 1 〉	통과 (0.11ms, 10.4MB)
-테스트 2 〉	통과 (0.06ms, 10.4MB)
-테스트 3 〉	통과 (0.03ms, 10.4MB)
-테스트 4 〉	통과 (0.03ms, 10.5MB)
-테스트 5 〉	통과 (0.06ms, 10.3MB)
-테스트 6 〉	실패 (0.07ms, 10.3MB)
+테스트 1 〉	통과 (0.17ms, 10.4MB)
+테스트 2 〉	통과 (0.10ms, 10.4MB)
+테스트 3 〉	통과 (0.05ms, 10.5MB)
+테스트 4 〉	통과 (0.04ms, 10.6MB)
+테스트 5 〉	통과 (0.05ms, 10.5MB)
+테스트 6 〉	통과 (0.12ms, 10.4MB)
 테스트 7 〉	통과 (0.07ms, 10.4MB)
-테스트 8 〉	통과 (0.08ms, 10.5MB)
-테스트 9 〉	통과 (0.21ms, 10.5MB)
-테스트 10 〉	통과 (0.20ms, 10.4MB)
-테스트 11 〉	실패 (0.25ms, 10.5MB)
-테스트 12 〉	통과 (0.49ms, 10.3MB)
-테스트 13 〉	실패 (3.19ms, 10.6MB)
-테스트 14 〉	실패 (4.84ms, 10.6MB)
-테스트 15 〉	실패 (33.31ms, 11.6MB)
-테스트 16 〉	실패 (41.16ms, 11.4MB)
-테스트 17 〉	통과 (50.79ms, 11.8MB)
-테스트 18 〉	통과 (62.09ms, 11.9MB)
-테스트 19 〉	통과 (183.03ms, 12.4MB)
-테스트 20 〉	통과 (126.31ms, 22.1MB)
-테스트 21 〉	통과 (9580.13ms, 38.9MB)
-테스트 22 〉	통과 (1.63ms, 10.3MB)
+테스트 8 〉	통과 (0.08ms, 10.4MB)
+테스트 9 〉	통과 (0.20ms, 10.4MB)
+테스트 10 〉	통과 (0.19ms, 10.4MB)
+테스트 11 〉	실패 (0.28ms, 10.4MB)
+테스트 12 〉	통과 (0.29ms, 10.5MB)
+테스트 13 〉	통과 (2.60ms, 10.5MB)
+테스트 14 〉	통과 (3.21ms, 10.5MB)
+테스트 15 〉	통과 (31.09ms, 11.6MB)
+테스트 16 〉	통과 (25.72ms, 11.4MB)
+테스트 17 〉	통과 (53.54ms, 11.9MB)
+테스트 18 〉	통과 (60.58ms, 11.9MB)
+테스트 19 〉	통과 (182.68ms, 12.4MB)
+테스트 20 〉	통과 (125.97ms, 22MB)
+테스트 21 〉	통과 (9276.00ms, 39.1MB)
+테스트 22 〉	통과 (3.37ms, 10.5MB)
 ```
+- 전형적인 구현 문제였다.
+- 전략
+    - 셀의 값들 정보가 담겨있는 `table`과 병합된 셀 정보가 담겨있는 `merged` 모두 딕셔너리로 구성하여, 해시 및 공간적인 이점을 활용
+        - `table`은 `(r,c)`에 값을 넣음
+        - `merged`는 `(r,c)`에 병합된 셀의 좌표들을 모두 넣음
+- 실수했던 부분을 결국 찾았지만, 하나의 테스트 케이스는 결국 실패 원인을 찾지 못했다,,
+    - MERGE 부분에서 두 셀 중 하나만 값이 존재하는 경우를 빠뜨렸다 (문제를 꼼꼼히 읽자!)
+
+# 다른 사람의 풀이
+```python
+def solution(commands):
+    answer = []
+    merged = [[(i, j) for j in range(50)] for i in range(50)]
+    board = [["EMPTY"] * 50 for _ in range(50)]
+    for command in commands:
+        command = command.split(' ')
+        if command[0] == 'UPDATE':
+            if len(command) == 4:
+                r,c,value = int(command[1])-1,int(command[2])-1,command[3]
+                x,y = merged[r][c]
+                board[x][y] = value
+            elif len(command) == 3:
+                value1, value2 = command[1], command[2]
+                for i in range(50):
+                    for j in range(50):
+                        if board[i][j] == value1:
+                            board[i][j] = value2
+        elif command[0] == 'MERGE':
+            r1,c1,r2,c2 = int(command[1])-1, int(command[2])-1, int(command[3])-1, int(command[4])-1
+            x1,y1 = merged[r1][c1]
+            x2,y2 = merged[r2][c2]
+            if board[x1][y1] == "EMPTY":
+                board[x1][y1] = board[x2][y2]
+            for i in range(50):
+                for j in range(50):
+                    if merged[i][j] == (x2,y2):
+                        merged[i][j] = (x1,y1)
+        elif command[0] == 'UNMERGE':
+            r, c = int(command[1])-1,int(command[2])-1
+            x, y = merged[r][c]
+            tmp = board[x][y]
+            for i in range(50):
+                for j in range(50):
+                    if merged[i][j] == (x,y):
+                        merged[i][j] = (i,j)
+                        board[i][j] = "EMPTY"
+            board[r][c] = tmp
+        elif command[0] == 'PRINT':
+            r, c = int(command[1])-1, int(command[2])-1
+            x, y = merged[r][c]
+            answer.append(board[x][y])
+    return answer
+```
+- 전략
+    - 내 풀이와 비슷하게 병합과 실제값을 관리하는 `merge`와 `board`를 두 가지 사용했지만, 이중 리스트로 사용
+    - 가장 핵심인 `merge`의 값은, 하나의 좌표를 고정하고 이후 병합되는 모든 셀들에 이 좌표를 사용
