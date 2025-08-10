@@ -27,7 +27,7 @@
 
 ![image](https://github.com/user-attachments/assets/c300c947-0ba8-41c8-ab13-75637bf2f9df)
 
-# 내 풀이
+# 내 풀이 #1
 ```python
 from collections import defaultdict, deque
 
@@ -71,4 +71,41 @@ def solution(n, computers):
 테스트 11 〉	통과 (1.03ms, 10.2MB)
 테스트 12 〉	통과 (0.39ms, 10.2MB)
 테스트 13 〉	통과 (0.22ms, 10.2MB)
+```
+# 내 풀이 #2
+```python
+from collections import defaultdict
+
+def solution(n, computers):
+    visited = [False for _ in range(n)]
+    answer=0
+    
+    def dfs(node):
+        visited[node]=True
+        for i in range(n):
+            if computers[i][node]==1 and visited[i]==False:
+                dfs(i)
+    
+    for i in range(n):
+        if visited[i]==False:
+            dfs(i)
+            answer+=1
+
+    return answer
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.01ms, 9.1MB)
+테스트 2 〉	통과 (0.01ms, 9.21MB)
+테스트 3 〉	통과 (0.04ms, 9.26MB)
+테스트 4 〉	통과 (0.03ms, 9.22MB)
+테스트 5 〉	통과 (0.00ms, 9.21MB)
+테스트 6 〉	통과 (0.15ms, 9.23MB)
+테스트 7 〉	통과 (0.02ms, 9.22MB)
+테스트 8 〉	통과 (0.11ms, 9.2MB)
+테스트 9 〉	통과 (0.07ms, 9.23MB)
+테스트 10 〉	통과 (0.07ms, 9.25MB)
+테스트 11 〉	통과 (0.53ms, 9.3MB)
+테스트 12 〉	통과 (0.42ms, 9.37MB)
+테스트 13 〉	통과 (0.21ms, 9.21MB)
 ```
