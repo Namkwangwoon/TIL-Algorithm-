@@ -16,7 +16,7 @@
 |-|-|
 |[[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]|30|
 
-# 내 풀이
+# 내 풀이 #1
 ```python
 def solution(triangle):
     l = len(triangle)
@@ -58,4 +58,50 @@ def solution(triangle):
 테스트 8 〉	통과 (32.93ms, 16.9MB)
 테스트 9 〉	통과 (34.93ms, 17.5MB)
 테스트 10 〉	통과 (41.19ms, 18.5MB)
+```
+# 내 풀이 #2
+```python
+def solution(triangle):
+    pre_line = triangle[0]
+    max_val = 0
+    for l, line in enumerate(triangle[1:]):
+        l+=2
+        new_line = []
+        
+        new_line.append(pre_line[0]+line[0])
+        for i in range(1, l-1):
+            sums = line[i]+max(pre_line[i-1], pre_line[i])
+            if max_val<sums:
+                max_val = sums
+            new_line.append(sums)
+        new_line.append(pre_line[-1]+line[-1])
+        pre_line = new_line
+    
+    return max_val
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.01ms, 9.36MB)
+테스트 2 〉	통과 (0.02ms, 9.28MB)
+테스트 3 〉	통과 (0.04ms, 9.22MB)
+테스트 4 〉	통과 (0.24ms, 9.29MB)
+테스트 5 〉	통과 (1.73ms, 9.33MB)
+테스트 6 〉	통과 (0.28ms, 9.29MB)
+테스트 7 〉	통과 (1.91ms, 9.33MB)
+테스트 8 〉	통과 (0.40ms, 9.23MB)
+테스트 9 〉	통과 (0.02ms, 9.22MB)
+테스트 10 〉	통과 (0.24ms, 9.28MB)
+```
+효율성  테스트
+```
+테스트 1 〉	통과 (27.11ms, 13.2MB)
+테스트 2 〉	통과 (20.98ms, 12.2MB)
+테스트 3 〉	통과 (30.39ms, 13.7MB)
+테스트 4 〉	통과 (30.44ms, 13.3MB)
+테스트 5 〉	통과 (25.33ms, 12.9MB)
+테스트 6 〉	통과 (31.20ms, 13.9MB)
+테스트 7 〉	통과 (28.97ms, 13.5MB)
+테스트 8 〉	통과 (27.05ms, 12.7MB)
+테스트 9 〉	통과 (25.62ms, 12.9MB)
+테스트 10 〉	통과 (30.61ms, 13.8MB)
 ```
