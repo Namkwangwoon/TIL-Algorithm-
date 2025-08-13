@@ -43,7 +43,7 @@
 
 이중 우선순위 큐에 -45, 45, 333이 남아있으므로, [333, -45]를 반환합니다.
 
-# 내 풀이
+# 내 풀이 1
 ```python
 import heapq
 
@@ -99,4 +99,54 @@ def solution(operations):
 테스트 8 〉	통과 (0.04ms, 10.4MB)
 테스트 9 〉	통과 (0.03ms, 10.4MB)
 테스트 10 〉	통과 (0.02ms, 10.5MB)
+```
+# 내 풀이 2
+```python
+import heapq
+
+def solution(operations):
+    min_que = []
+    max_que = []
+    
+    def insert(val):
+        heapq.heappush(min_que, val)
+        heapq.heappush(max_que, val*-1)
+        
+    def del_max():
+        if max_que:
+            max_val = heapq.heappop(max_que)
+            min_que.remove(max_val*-1)
+        
+    def del_min():
+        if min_que:
+            min_val = heapq.heappop(min_que)
+            max_que.remove(min_val*-1)
+    
+    for oper in operations:
+        op, val = oper.split()
+        val = int(val)
+        if op=='I':
+            insert(val)
+        else:
+            if val==1:
+                del_max()
+            else:
+                del_min()
+    if min_que:
+        return [max_que[0]*-1, min_que[0]]
+    else:
+        return [0, 0]
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.03ms, 9.25MB)
+테스트 2 〉	통과 (0.03ms, 9.28MB)
+테스트 3 〉	통과 (0.03ms, 9.27MB)
+테스트 4 〉	통과 (0.03ms, 9.27MB)
+테스트 5 〉	통과 (0.03ms, 9.48MB)
+테스트 6 〉	통과 (0.03ms, 9.4MB)
+테스트 7 〉	통과 (292.57ms, 15.5MB)
+테스트 8 〉	통과 (0.02ms, 9.18MB)
+테스트 9 〉	통과 (0.04ms, 9.24MB)
+테스트 10 〉	통과 (0.03ms, 9.21MB)
 ```
