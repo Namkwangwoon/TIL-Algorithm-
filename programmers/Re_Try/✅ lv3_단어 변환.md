@@ -30,7 +30,7 @@
 ### 예제 #2
 target인 "cog"는 words 안에 없기 때문에 변환할 수 없습니다.
 
-# 내 풀이
+# 내 풀이 1
 ```python
 from collections import deque
 
@@ -69,4 +69,38 @@ def solution(begin, target, words):
 테스트 3 〉	통과 (2.79ms, 10.3MB)
 테스트 4 〉	통과 (0.02ms, 10.2MB)
 테스트 5 〉	통과 (0.00ms, 10.4MB)
+```
+# 내 풀이 2
+```python
+from collections import deque
+
+def solution(begin, target, words):
+    que = deque([(begin, words[:])])
+    if target not in words: return 0
+    
+    def check_next(cur_word, word):
+        different = 0
+        for c, w in zip(cur_word, word):
+            if c!=w: different+=1
+            if different>1: return False
+        if different==1: return True
+        else: return False
+    
+    while que:
+        cur_word, new_words = que.popleft()
+        if cur_word==target:
+            return len(words)-len(new_words)
+        for i, word in enumerate(new_words):
+            if check_next(cur_word, word):
+                next_words = new_words[:i]+new_words[i+1:]
+                if next_words: que.append((word, next_words))
+    return 0
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.02ms, 9.08MB)
+테스트 2 〉	통과 (0.05ms, 9.19MB)
+테스트 3 〉	통과 (0.33ms, 9.04MB)
+테스트 4 〉	통과 (0.01ms, 9.13MB)
+테스트 5 〉	통과 (0.00ms, 9.2MB)
 ```
