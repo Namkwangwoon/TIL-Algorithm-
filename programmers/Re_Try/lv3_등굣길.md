@@ -24,7 +24,7 @@
 ## 입출력 예 설명
 ![image](https://github.com/user-attachments/assets/b1f5c398-4464-4b27-b138-58e77f7506c3)
 
-# 내 풀이
+# 내 풀이 1
 ```python
 def solution(m, n, puddles):
     maps = [[1]*(m+1) for _ in range(n+1)]
@@ -74,4 +74,53 @@ def solution(m, n, puddles):
 테스트 8 〉	통과 (1.61ms, 10.2MB)
 테스트 9 〉	통과 (1.68ms, 10.3MB)
 테스트 10 〉	통과 (1.69ms, 10.2MB)
+```
+
+# 내 풀이 2
+```python
+def solution(m, n, puddles):
+    maps = [[1 for _ in range(m)] for _ in range(n)]
+    
+    for c, r in puddles:
+        r, c = r-1, c-1
+        maps[r][c] = 0
+        if r==0:
+            for i in range(c+1,m):
+                maps[r][i]=0
+        if c==0:
+            for i in range(r+1,n):
+                maps[i][c]=0
+    
+    for r in range(1, n):
+        for c in range(1, m):
+            if maps[r][c]!=0:
+                maps[r][c] = maps[r-1][c] + maps[r][c-1]
+            
+    return maps[-1][-1] % 1000000007
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.01ms, 9.27MB)
+테스트 2 〉	통과 (0.01ms, 9.17MB)
+테스트 3 〉	통과 (0.02ms, 9.29MB)
+테스트 4 〉	통과 (0.02ms, 9.23MB)
+테스트 5 〉	통과 (0.04ms, 9.29MB)
+테스트 6 〉	통과 (0.03ms, 9.24MB)
+테스트 7 〉	통과 (0.03ms, 9.29MB)
+테스트 8 〉	통과 (0.07ms, 9.22MB)
+테스트 9 〉	통과 (0.03ms, 9.28MB)
+테스트 10 〉	통과 (0.02ms, 9.36MB)
+```
+효율성  테스트
+```
+테스트 1 〉	통과 (2.11ms, 9.31MB)
+테스트 2 〉	통과 (0.95ms, 9.13MB)
+테스트 3 〉	통과 (1.08ms, 9.27MB)
+테스트 4 〉	통과 (1.72ms, 9.39MB)
+테스트 5 〉	통과 (1.22ms, 9.38MB)
+테스트 6 〉	통과 (2.27ms, 9.4MB)
+테스트 7 〉	통과 (0.79ms, 9.24MB)
+테스트 8 〉	통과 (1.65ms, 9.3MB)
+테스트 9 〉	통과 (1.28ms, 9.26MB)
+테스트 10 〉	통과 (1.48ms, 9.39MB)
 ```
