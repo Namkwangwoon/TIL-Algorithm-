@@ -34,7 +34,7 @@ B 팀원들을 4번, 2번, 3번, 1번의 순서대로 출전시킬 경우 팀원
 ### 입출력 예 #2
 B 팀원들을 어떤 순서로 출전시켜도 B팀의 승점은 0점입니다.
 
-# 내 풀이
+# 내 풀이 1
 ```python
 def solution(A, B):
     A.sort(reverse=True)
@@ -74,4 +74,54 @@ def solution(A, B):
 테스트 1 〉	통과 (39.71ms, 18.5MB)
 테스트 2 〉	통과 (38.38ms, 18.3MB)
 테스트 3 〉	통과 (39.91ms, 18.2MB)
+```
+# 내 풀이 2
+```python
+def solution(A, B):
+    score=0
+    A, B = sorted(A), sorted(B)
+    ind_a, ind_b = 0, 0
+    
+    while ind_a<len(A) and ind_b<len(B):
+        if A[ind_a]<B[ind_b]:
+            ind_a+=1
+            ind_b+=1
+            score+=1
+            continue
+        while ind_b<len(B) and A[ind_a]>=B[ind_b]:
+            ind_b+=1
+        if ind_b>=len(B): break
+        if A[ind_a]<B[ind_b]:
+            score+=1
+            ind_b+=1
+            ind_a+=1
+    
+    return score
+```
+정확성  테스트
+```
+테스트 1 〉	통과 (0.00ms, 9.29MB)
+테스트 2 〉	통과 (0.00ms, 9.23MB)
+테스트 3 〉	통과 (0.01ms, 9.16MB)
+테스트 4 〉	통과 (0.00ms, 9.36MB)
+테스트 5 〉	통과 (0.03ms, 9.22MB)
+테스트 6 〉	통과 (0.03ms, 9.21MB)
+테스트 7 〉	통과 (0.05ms, 9.15MB)
+테스트 8 〉	통과 (0.02ms, 9.26MB)
+테스트 9 〉	통과 (0.35ms, 9.21MB)
+테스트 10 〉	통과 (0.22ms, 9.16MB)
+테스트 11 〉	통과 (0.64ms, 9.21MB)
+테스트 12 〉	통과 (0.17ms, 9.23MB)
+테스트 13 〉	통과 (2.80ms, 9.62MB)
+테스트 14 〉	통과 (4.11ms, 9.84MB)
+테스트 15 〉	통과 (2.76ms, 9.57MB)
+테스트 16 〉	통과 (3.84ms, 9.79MB)
+테스트 17 〉	통과 (0.90ms, 9.37MB)
+테스트 18 〉	통과 (0.61ms, 9.34MB)
+```
+효율성  테스트
+```
+테스트 1 〉	통과 (63.16ms, 18.6MB)
+테스트 2 〉	통과 (55.99ms, 18.4MB)
+테스트 3 〉	통과 (56.58ms, 18.4MB)
 ```
